@@ -94,8 +94,8 @@ export default (bots, parentNode) => {
         case 'MOVE': {
           const movement = (
             Vector.magnitudeSquared(action) > 1
-            ? Vector.normalize(action)
-            : action
+              ? Vector.normalize(action)
+              : action
           )
 
           action.bot.pos = Vector.add(

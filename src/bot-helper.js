@@ -12,8 +12,9 @@ export const setupBots = (bots) => {
     health: 100,
     reload: 30,
     pos: (
-      i === 0 ? { x: -50, y: -50 }
-      : { x: 50, y: 50 }
+      i === 0
+        ? { x: -50, y: -50 }
+        : { x: 50, y: 50 }
     )
   }))
 }

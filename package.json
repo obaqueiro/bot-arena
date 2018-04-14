@@ -6,10 +6,17 @@
   "license": "MIT",
   "scripts": {
     "start": "parcel src/index.html -d .tmp",
-    "build": "parcel build src/index.html --public-url ./"
+    "build": "parcel build src/index.html --public-url ./",
+    "test": "standard"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn test"
+    }
   },
   "dependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "husky": "^1.0.0-rc.1",
     "node-sass": "^4.8.3",
     "outline.js": "https://github.com/lindsayevans/outline.js",
     "parcel-bundler": "^1.7.0",

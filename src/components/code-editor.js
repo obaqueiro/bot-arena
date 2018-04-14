@@ -18,8 +18,8 @@ const actions = {
     try {
       const tabs = state.tabs.map((tab, i) => (
         i === index
-        ? { ...tab, code: value }
-        : tab
+          ? { ...tab, code: value }
+          : tab
       ))
       const bots = setupBots(tabs.map(tab => ({
         constructor: Function(tab.code) // eslint-disable-line
@@ -48,27 +48,27 @@ export default connect('activeTab,tabs', actions)(
       </div>
       <div className={`editor -active${activeTab}`}>
         {
-        tabs.map((tab, i) => (
-          <AceEditor
-            key={`bot-editor-${i}`}
-            name={`bot-editor-${i}`}
-            mode='javascript'
-            theme='monokai'
-            width='100%'
-            height='100%'
-            onLoad={onLoad}
-            onChange={value => onChange(i, value)}
-            fontSize={14}
-            value={tab.code}
-            setOptions={{
-              tabSize: 2
-            }}
-            editorProps={{
-              $blockScrolling: Infinity
-            }}
-          />
-        ))
-      }
+          tabs.map((tab, i) => (
+            <AceEditor
+              key={`bot-editor-${i}`}
+              name={`bot-editor-${i}`}
+              mode='javascript'
+              theme='monokai'
+              width='100%'
+              height='100%'
+              onLoad={onLoad}
+              onChange={value => onChange(i, value)}
+              fontSize={14}
+              value={tab.code}
+              setOptions={{
+                tabSize: 2
+              }}
+              editorProps={{
+                $blockScrolling: Infinity
+              }}
+            />
+          ))
+        }
       </div>
       <div className='bottom'>
         <code>{'}'}</code>

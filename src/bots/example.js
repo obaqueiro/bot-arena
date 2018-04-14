@@ -1,5 +1,5 @@
 export default (
-`// Bot radius is 10
+  `// Bot radius is 10
 // Bot speed is 1
 // Bot health is 100
 // Bullet radius is 3

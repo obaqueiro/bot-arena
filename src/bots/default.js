@@ -1,5 +1,5 @@
 export default (
-`return {
+  `return {
   name: 'CPU Bot',
   image: 'https://robohash.org/robot.png?set=set2&size=40x40&bgset=bg2',
   action: ({ me, enemies }) => {
