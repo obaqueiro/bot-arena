@@ -1,0 +1,29 @@
+{
+  "name": "bot-arena",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Viktor Hesselbom <viktor@hesselbom.net>",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel src/index.html -d .tmp",
+    "build": "parcel build src/index.html --public-url ./"
+  },
+  "dependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "node-sass": "^4.8.3",
+    "outline.js": "https://github.com/lindsayevans/outline.js",
+    "parcel-bundler": "^1.7.0",
+    "random-seed": "^0.3.0",
+    "react": "^16.0.0",
+    "react-ace": "^6.0.0",
+    "react-dom": "^16.3.1",
+    "standard": "^11.0.1",
+    "unistore": "^3.0.4"
+  },
+  "standard": {
+    "ignore": [
+      "dist",
+      "lib"
+    ]
+  }
+}

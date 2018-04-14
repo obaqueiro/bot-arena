@@ -1,0 +1,35 @@
+.code-editor
+  height: 100%
+  display: flex
+  flex-direction: column
+  font-size: 1.6rem
+
+  code
+    display: block
+
+  > .bottom
+    margin-top: 0.5em
+
+  > .top
+    display: flex
+    align-items: flex-end
+
+    > code
+      margin-bottom: 0.5em
+      margin-right: auto
+
+  > .editor
+    height: 100%
+    position: relative
+
+    > .ace_editor
+      position: absolute
+      top: 0
+      left: 0
+      opacity: 0
+      visibility: hidden
+
+    @for $i from 1 through 2
+      &.-active#{$i - 1} > .ace_editor:nth-child(#{$i})
+        opacity: 1
+        visibility: visible
