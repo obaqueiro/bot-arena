@@ -97,7 +97,7 @@ export default connect('activeTab,tabs,showReset', actions)(
       </div>
       <div className='bottom'>
         <code>{'}'}</code>
-        <a href='https://github.com/hesselbom/bot-arena'>View source at Github</a>
+        <a href='https://github.com/hesselbom/bot-arena'>View source on Github</a>
       </div>
     </div>
   )
