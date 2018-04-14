@@ -7,6 +7,8 @@ import 'brace/theme/monokai'
 import 'brace/ext/language_tools'
 import 'brace/ext/searchbox'
 import TabsList from './tabs-list'
+import defaultBot from '../bots/default'
+import exampleBot from '../bots/example'
 import { setupBots } from '../bot-helper'
 
 const onLoad = (editor) => {
@@ -34,17 +36,40 @@ const actions = {
         ) || 'Unnamed Bot'
       })
 
-      return { tabs, bots }
+      window.localStorage.setItem(
+        'bot-arena-tabs',
+        JSON.stringify(tabs)
+      )
+
+      return { tabs, bots, showReset: true }
     } catch (_) {}
+  },
+  onReset: () => {
+    if (window.confirm('This will reset to default code, are you sure you want that?')) {
+      window.localStorage.removeItem('bot-arena-tabs')
+
+      return {
+        tabs: [
+          { title: 'My Bot', code: exampleBot },
+          { title: 'CPU Bot', code: defaultBot }
+        ],
+        bots: setupBots([
+          { constructor: Function(exampleBot) }, // eslint-disable-line
+          { constructor: Function(defaultBot) } // eslint-disable-line
+        ]),
+        showReset: false
+      }
+    }
   }
 }
 
-export default connect('activeTab,tabs', actions)(
-  ({ activeTab, tabs, onChange }) => (
+export default connect('activeTab,tabs,showReset', actions)(
+  ({ activeTab, tabs, showReset, onChange, onReset }) => (
     <div className='code-editor'>
       <div className='top'>
         <code>{'function () {'}</code>
         <TabsList />
+        { showReset && <button className='reset' onClick={onReset}>Reset</button> }
       </div>
       <div className={`editor -active${activeTab}`}>
         {
