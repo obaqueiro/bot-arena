@@ -3,7 +3,7 @@ export default (
 // Bot speed is 1
 // Bot health is 100
 // Bullet radius is 3
-// Bullet speed is 1
+// Bullet speed is 2
 // Bullet does 10 damage
 // Arena radius is 160
 // Reload time is 30 frames

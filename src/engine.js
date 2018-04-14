@@ -2,7 +2,7 @@ import Vector from './vector'
 
 const BOT_RADIUS = 10
 const BULLET_RADIUS = 3
-const BULLET_SPEED = 1
+const BULLET_SPEED = 2
 const ARENA_RADIUS = 160
 const RELOAD_TIME = 30
 const BULLET_BOUNDARY = Math.pow(ARENA_RADIUS + BULLET_RADIUS, 2)
