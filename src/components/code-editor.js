@@ -70,7 +70,10 @@ export default connect('activeTab,tabs', actions)(
         ))
       }
       </div>
-      <code className='bottom'>{'}'}</code>
+      <div className='bottom'>
+        <code>{'}'}</code>
+        <a href='https://github.com/hesselbom/bot-arena'>View source at Github</a>
+      </div>
     </div>
   )
 )

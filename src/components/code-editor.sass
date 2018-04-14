@@ -7,16 +7,26 @@
   code
     display: block
 
+  > .top, > .bottom
+    display: flex
+
+    > code
+      margin-right: auto
+
   > .bottom
-    margin-top: 0.5em
+    align-items: center
+    margin-top: 0.6rem
+
+    > a
+      display: inline-block
+      font-size: 1rem
+      color: rgba(black, 0.5)
 
   > .top
-    display: flex
     align-items: flex-end
 
     > code
-      margin-bottom: 0.5em
-      margin-right: auto
+      margin-bottom: 0.6rem
 
   > .editor
     height: 100%
