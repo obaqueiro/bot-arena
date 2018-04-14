@@ -7,5 +7,9 @@ It comes with some simple example bots.
 When visiting the page, the default example bot ("My Bot") includes comments describing the various options.
 
 ## Running
+- Visit https://bot-arena.netlify.com/
+
+**or**
+
 - Install dependencies with `yarn` or `npm install`
 - Run with `yarn start` or `npm start`
