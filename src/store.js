@@ -21,8 +21,7 @@ export default createStore({
   activeTab: 0,
   tabs,
   showReset,
-  bots: setupBots([
-    { constructor: Function(exampleBot) }, // eslint-disable-line
-    { constructor: Function(defaultBot) } // eslint-disable-line
-  ])
+  bots: setupBots(tabs.map(tab => ({
+    constructor: Function(tab.code) // eslint-disable-line
+  })))
 })
