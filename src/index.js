@@ -19,3 +19,8 @@ const Arena = () => (
 )
 
 render(<Arena />, document.getElementById('app'))
+
+// Trigger resize to fix Ace Editor scrolling
+setTimeout(() => (
+  window.dispatchEvent(new window.Event('resize'))
+), 500)
