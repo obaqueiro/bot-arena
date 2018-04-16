@@ -1,6 +1,7 @@
-import Vector from './vector'
+import V from './vector'
 
 const BOT_RADIUS = 10
+const BOT_COLLISION_DIST = (BOT_RADIUS + BOT_RADIUS) * (BOT_RADIUS + BOT_RADIUS)
 const BULLET_RADIUS = 3
 const BULLET_SPEED = 2
 const ARENA_RADIUS = 160
@@ -34,8 +35,8 @@ export default (bots, parentNode) => {
 
     return {
       // Move out of bot
-      pos: Vector.add(pos, Vector.multScalar(dir, BOT_RADIUS + BULLET_RADIUS)),
-      vel: Vector.multScalar(dir, BULLET_SPEED),
+      pos: V.add(pos, V.multScalar(dir, BOT_RADIUS + BULLET_RADIUS)),
+      vel: V.multScalar(dir, BULLET_SPEED),
       dir,
       dom
     }
@@ -52,14 +53,14 @@ export default (bots, parentNode) => {
   const mapBot = (bot) => ({
     name: bot.object.name,
     health: bot.health,
-    pos: Vector.clone(bot.pos),
+    pos: V.clone(bot.pos),
     lastAction: { ...bot.lastAction }
   })
 
   const mapBullet = (bullet) => ({
-    pos: Vector.clone(bullet.pos),
-    vel: Vector.clone(bullet.vel),
-    dir: Vector.clone(bullet.dir)
+    pos: V.clone(bullet.pos),
+    vel: V.clone(bullet.vel),
+    dir: V.clone(bullet.dir)
   })
 
   const update = () => {
@@ -101,12 +102,12 @@ export default (bots, parentNode) => {
         switch (action.type) {
           case 'MOVE': {
             const movement = (
-              Vector.magnitudeSquared(action) > 1
-                ? Vector.normalize(action)
+              V.magnitudeSquared(action) > 1
+                ? V.normalize(action)
                 : action
             )
 
-            action.bot.pos = Vector.add(
+            action.bot.pos = V.add(
               action.bot.pos,
               movement
             )
@@ -116,7 +117,7 @@ export default (bots, parentNode) => {
             if (action.bot.reload <= 0) {
               state.bullets.push(createBullet(
                 action.bot.pos,
-                Vector.normalize(action)
+                V.normalize(action)
               ))
               action.bot.reload = RELOAD_TIME + 1
             }
@@ -127,20 +128,34 @@ export default (bots, parentNode) => {
         action.bot.lastAction = { ...action }
       })
 
-      // Clamp inside boundary
       bots.forEach(bot => {
         bot.reload = Math.max(0, bot.reload - 1)
-        bot.pos = Vector.clamp(bot.pos, 0, ARENA_RADIUS - BOT_RADIUS)
+
+        // Clamp inside boundary
+        bot.pos = V.clamp(bot.pos, 0, ARENA_RADIUS - BOT_RADIUS)
+
+        // Resolve collisions
+        bots.forEach(bot2 => {
+          if (bot === bot2) return
+
+          if (V.distanceSquared(bot.pos, bot2.pos) < BOT_COLLISION_DIST) {
+            const delta = V.sub(bot.pos, bot2.pos)
+            const d = V.magnitude(delta)
+            const mtd = V.multScalar(delta, ((BOT_RADIUS + BOT_RADIUS) - d) / d)
+            bot.pos = V.add(bot.pos, V.multScalar(mtd, 0.5))
+            bot2.pos = V.sub(bot2.pos, V.multScalar(mtd, 0.5))
+          }
+        })
       })
 
       // Run bullets
       state.bullets = state.bullets.filter(bullet => {
-        bullet.pos = Vector.add(bullet.pos, bullet.vel)
+        bullet.pos = V.add(bullet.pos, bullet.vel)
         bullet.dom.style.transform = `translate(${bullet.pos.x}px, ${bullet.pos.y}px)`
 
         // Check if hit bot
         for (let bot of bots) {
-          if (bot.health > 0 && Vector.distanceSquared(bot.pos, bullet.pos) < BULLET_TO_BOT_BOUNDARY) {
+          if (bot.health > 0 && V.distanceSquared(bot.pos, bullet.pos) < BULLET_TO_BOT_BOUNDARY) {
             bot.health -= 10
             parentNode.removeChild(bullet.dom)
             return false
@@ -148,7 +163,7 @@ export default (bots, parentNode) => {
         }
 
         // Remove if outside boundary
-        if (Vector.magnitudeSquared(bullet.pos) >= BULLET_BOUNDARY) {
+        if (V.magnitudeSquared(bullet.pos) >= BULLET_BOUNDARY) {
           parentNode.removeChild(bullet.dom)
           return false
         }
