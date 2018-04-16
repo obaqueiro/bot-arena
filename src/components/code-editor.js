@@ -16,14 +16,14 @@ const onLoad = (editor) => {
 }
 
 const actions = {
-  onChange: (state, index, value) => {
+  onChange: async (state, index, value) => {
     try {
       const tabs = state.tabs.map((tab, i) => (
         i === index
           ? { ...tab, code: value }
           : tab
       ))
-      const bots = setupBots(tabs.map(tab => ({
+      const bots = await setupBots(tabs.map(tab => ({
         constructor: Function(tab.code) // eslint-disable-line
       })))
 

@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "husky": "^1.0.0-rc.1",
     "node-sass": "^4.8.3",
     "outline.js": "https://github.com/lindsayevans/outline.js",

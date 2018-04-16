@@ -17,12 +17,17 @@ try {
   }
 } catch (_) {}
 
-export default createStore({
+const store = createStore({
   activeTab: 0,
   speed: 3,
   tabs,
   showReset,
-  bots: setupBots(tabs.map(tab => ({
-    constructor: Function(tab.code) // eslint-disable-line
-  })))
+  bots: []
 })
+
+setupBots(tabs.map(tab => ({
+  constructor: Function(tab.code) // eslint-disable-line
+})))
+  .then(bots => store.setState({ bots }))
+
+export default store
