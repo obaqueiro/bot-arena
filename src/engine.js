@@ -151,7 +151,7 @@ export default (bots, parentNode) => {
       // Run bullets
       state.bullets = state.bullets.filter(bullet => {
         bullet.pos = V.add(bullet.pos, bullet.vel)
-        bullet.dom.style.transform = `translate(${bullet.pos.x}px, ${bullet.pos.y}px)`
+        bullet.dom.style.transform = `translate(${bullet.pos.x / 10}em, ${bullet.pos.y / 10}em)`
 
         // Check if hit bot
         for (let bot of bots) {
@@ -173,7 +173,7 @@ export default (bots, parentNode) => {
       // Render
       bots.forEach(bot => {
         if (bot.dom) {
-          bot.dom.style.transform = `translate(${bot.pos.x}px, ${bot.pos.y}px)`
+          bot.dom.style.transform = `translate(${bot.pos.x / 10}em, ${bot.pos.y / 10}em)`
           bot.healthDom.style.transform = `scaleX(${bot.health / 100})`
 
           if (bot.health <= 0) {

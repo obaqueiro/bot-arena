@@ -1,9 +1,16 @@
 .battle-field
-  width: 32rem
-  height: 32rem
+  width: 32em
+  height: 32em
   background: rgba(black, 0.1)
   position: relative
   overflow: hidden
+  font-size: 1rem
+
+  @media screen and (min-width: 1236px)
+    font-size: 1.5rem
+
+  @media screen and (min-width: 1396px)
+    font-size: 2rem
 
   &:before
     content: ''
@@ -15,25 +22,25 @@
 
   > .bot
     position: absolute
-    top: calc(50% - 1rem)
-    left: calc(50% - 1rem)
-    width: 2rem
-    height: 2rem
+    top: calc(50% - 1em)
+    left: calc(50% - 1em)
+    width: 2em
+    height: 2em
     border-radius: 50%
     background: rgba(black, 0.1) center
     background-size: cover
     transition: opacity .3s ease
-    box-shadow: 0 0.2rem 1rem rgba(black, 0.2)
+    box-shadow: 0 0.2em 1em rgba(black, 0.2)
 
     &.-dead
       opacity: 0.2
 
     > .health
       position: absolute
-      top: 2.5rem
+      top: 2.5em
       left: 0
-      width: 2rem
-      height: 0.3rem
+      width: 2em
+      height: 0.3em
       background: rgba(black, 0.1)
 
       > .bar
@@ -44,10 +51,10 @@
 
   > .bullet
     position: absolute
-    top: calc(50% - 0.15rem)
-    left: calc(50% - 0.15rem)
-    width: 0.3rem
-    height: 0.3rem
+    top: calc(50% - 0.15em)
+    left: calc(50% - 0.15em)
+    width: 0.3em
+    height: 0.3em
     border-radius: 50%
     background: rgba(black, 0.8) center
     background-size: cover
@@ -64,7 +71,7 @@
     display: flex
     align-items: center
     justify-content: center
-    text-shadow: 0px 0.2rem 1rem rgba(black, 0.1)
+    text-shadow: 0px 0.2em 1em rgba(black, 0.1)
     z-index: 1
-    font-size: 1.4rem
+    font-size: 1.4em
     letter-spacing: 0.5px
