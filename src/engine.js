@@ -50,7 +50,8 @@ export default (bots, parentNode) => {
   const mapBot = (bot) => ({
     name: bot.object.name,
     health: bot.health,
-    pos: Vector.clone(bot.pos)
+    pos: Vector.clone(bot.pos),
+    lastAction: { ...bot.lastAction }
   })
 
   const mapBullet = (bullet) => ({
@@ -115,6 +116,8 @@ export default (bots, parentNode) => {
           break
         }
       }
+
+      action.bot.lastAction = { ...action }
     })
 
     // Clamp inside boundary
