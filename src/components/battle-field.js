@@ -60,7 +60,7 @@ export default connect('bots,speed', actions)(
             value={this.props.speed}
             onChange={this.props.onSpeed}
           />
-          <span className='value'>{speeds[this.props.speed]}x</span>
+          <span className='value'>Speed: {speeds[this.props.speed]}x</span>
         </div>
       </div>
     }
