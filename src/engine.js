@@ -85,21 +85,26 @@ export default (bots, parentNode) => {
         if (bot.health <= 0) return
 
         if (bot.object.action) {
-          let action = bot.object.action({
-            me: _me,
-            enemies: _enemies,
-            bullets: _bullets,
-            frame: state.frame
-          })
+          try {
+            let action = bot.object.action({
+              me: _me,
+              enemies: _enemies,
+              bullets: _bullets,
+              frame: state.frame
+            })
 
-          if (action) {
-            actions.push({ ...action, bot })
-          }
+            if (action) {
+              actions.push({ ...action, bot })
+            }
+          } catch (err) { console.warn(err) }
         }
       })
 
       // Execute actions
       actions.forEach(action => {
+        action.x = action.x || 0
+        action.y = action.y || 0
+
         switch (action.type) {
           case MOVE: {
             const movement = (

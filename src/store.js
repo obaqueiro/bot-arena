@@ -15,7 +15,7 @@ try {
     tabs = storedTabs
     showReset = true
   }
-} catch (_) {}
+} catch (err) { console.warn(err) }
 
 const store = createStore({
   activeTab: 0,

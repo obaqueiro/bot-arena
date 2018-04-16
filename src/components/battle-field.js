@@ -28,7 +28,7 @@ export default connect('bots,speed', actions)(
       try {
         this.engine = Engine(this.props.bots, this.refs.field)
         this.engine.setSpeed(speeds[this.props.speed])
-      } catch (_) {}
+      } catch (err) { console.warn(err) }
     }
 
     render () {
