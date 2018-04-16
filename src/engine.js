@@ -13,7 +13,9 @@ export default (bots, parentNode) => {
     running: true,
     winnerFound: false,
     frame: 0,
-    bullets: []
+    frameAcc: 0,
+    bullets: [],
+    speed: 1
   }
 
   let winnerDom
@@ -61,121 +63,131 @@ export default (bots, parentNode) => {
   })
 
   const update = () => {
-    if (!state.running) return
+    state.frameAcc += state.speed
 
-    const actions = []
-    const _bullets = state.bullets.map(mapBullet)
+    while (state.frameAcc >= 1) {
+      state.frameAcc -= 1
 
-    // Bots decide their next action
-    bots.forEach(bot => {
-      const _me = mapBot(bot)
-      const _enemies = bots.filter(b => b.key !== bot.key).map(mapBot)
+      if (!state.running) return
 
-      _me.reload = bot.reload
+      const actions = []
+      const _bullets = state.bullets.map(mapBullet)
 
-      if (bot.health <= 0) return
+      // Bots decide their next action
+      bots.forEach(bot => {
+        const _me = mapBot(bot)
+        const _enemies = bots.filter(b => b.key !== bot.key).map(mapBot)
 
-      if (bot.object.action) {
-        let action = bot.object.action({
-          me: _me,
-          enemies: _enemies,
-          bullets: _bullets,
-          frame: state.frame
-        })
+        _me.reload = bot.reload
 
-        if (action) {
-          actions.push({ ...action, bot })
-        }
-      }
-    })
+        if (bot.health <= 0) return
 
-    // Execute actions
-    actions.forEach(action => {
-      switch (action.type) {
-        case 'MOVE': {
-          const movement = (
-            Vector.magnitudeSquared(action) > 1
-              ? Vector.normalize(action)
-              : action
-          )
+        if (bot.object.action) {
+          let action = bot.object.action({
+            me: _me,
+            enemies: _enemies,
+            bullets: _bullets,
+            frame: state.frame
+          })
 
-          action.bot.pos = Vector.add(
-            action.bot.pos,
-            movement
-          )
-          break
-        }
-        case 'SHOOT': {
-          if (action.bot.reload <= 0) {
-            state.bullets.push(createBullet(
-              action.bot.pos,
-              Vector.normalize(action)
-            ))
-            action.bot.reload = RELOAD_TIME + 1
+          if (action) {
+            actions.push({ ...action, bot })
           }
-          break
         }
-      }
+      })
 
-      action.bot.lastAction = { ...action }
-    })
+      // Execute actions
+      actions.forEach(action => {
+        switch (action.type) {
+          case 'MOVE': {
+            const movement = (
+              Vector.magnitudeSquared(action) > 1
+                ? Vector.normalize(action)
+                : action
+            )
 
-    // Clamp inside boundary
-    bots.forEach(bot => {
-      bot.reload = Math.max(0, bot.reload - 1)
-      bot.pos = Vector.clamp(bot.pos, 0, ARENA_RADIUS - BOT_RADIUS)
-    })
+            action.bot.pos = Vector.add(
+              action.bot.pos,
+              movement
+            )
+            break
+          }
+          case 'SHOOT': {
+            if (action.bot.reload <= 0) {
+              state.bullets.push(createBullet(
+                action.bot.pos,
+                Vector.normalize(action)
+              ))
+              action.bot.reload = RELOAD_TIME + 1
+            }
+            break
+          }
+        }
 
-    // Run bullets
-    state.bullets = state.bullets.filter(bullet => {
-      bullet.pos = Vector.add(bullet.pos, bullet.vel)
-      bullet.dom.style.transform = `translate(${bullet.pos.x}px, ${bullet.pos.y}px)`
+        action.bot.lastAction = { ...action }
+      })
 
-      // Check if hit bot
-      for (let bot of bots) {
-        if (bot.health > 0 && Vector.distanceSquared(bot.pos, bullet.pos) < BULLET_TO_BOT_BOUNDARY) {
-          bot.health -= 10
+      // Clamp inside boundary
+      bots.forEach(bot => {
+        bot.reload = Math.max(0, bot.reload - 1)
+        bot.pos = Vector.clamp(bot.pos, 0, ARENA_RADIUS - BOT_RADIUS)
+      })
+
+      // Run bullets
+      state.bullets = state.bullets.filter(bullet => {
+        bullet.pos = Vector.add(bullet.pos, bullet.vel)
+        bullet.dom.style.transform = `translate(${bullet.pos.x}px, ${bullet.pos.y}px)`
+
+        // Check if hit bot
+        for (let bot of bots) {
+          if (bot.health > 0 && Vector.distanceSquared(bot.pos, bullet.pos) < BULLET_TO_BOT_BOUNDARY) {
+            bot.health -= 10
+            parentNode.removeChild(bullet.dom)
+            return false
+          }
+        }
+
+        // Remove if outside boundary
+        if (Vector.magnitudeSquared(bullet.pos) >= BULLET_BOUNDARY) {
           parentNode.removeChild(bullet.dom)
           return false
         }
-      }
+        return true
+      })
 
-      // Remove if outside boundary
-      if (Vector.magnitudeSquared(bullet.pos) >= BULLET_BOUNDARY) {
-        parentNode.removeChild(bullet.dom)
-        return false
-      }
-      return true
-    })
+      // Render
+      bots.forEach(bot => {
+        if (bot.dom) {
+          bot.dom.style.transform = `translate(${bot.pos.x}px, ${bot.pos.y}px)`
+          bot.healthDom.style.transform = `scaleX(${bot.health / 100})`
 
-    // Render
-    bots.forEach(bot => {
-      if (bot.dom) {
-        bot.dom.style.transform = `translate(${bot.pos.x}px, ${bot.pos.y}px)`
-        bot.healthDom.style.transform = `scaleX(${bot.health / 100})`
+          if (bot.health <= 0) {
+            bot.dom.classList.add('-dead')
+          }
+        }
+      })
 
-        if (bot.health <= 0) {
-          bot.dom.classList.add('-dead')
+      // Look for winner
+      if (!state.winnerFound) {
+        const botsLeft = bots.filter(b => b.health > 0)
+        if (botsLeft.length <= 1) {
+          winner(botsLeft[0])
+          state.winnerFound = true
         }
       }
-    })
 
-    // Look for winner
-    if (!state.winnerFound) {
-      const botsLeft = bots.filter(b => b.health > 0)
-      if (botsLeft.length <= 1) {
-        winner(botsLeft[0])
-        state.winnerFound = true
-      }
+      state.frame += 1
     }
 
-    state.frame += 1
     window.requestAnimationFrame(update)
   }
 
   update()
 
   return {
+    setSpeed: (speed) => {
+      state.speed = speed || 1
+    },
     dispose: () => {
       state.bullets.forEach(b => parentNode.removeChild(b.dom))
       state.bullets = []
