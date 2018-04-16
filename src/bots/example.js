@@ -11,7 +11,7 @@ export default (
 
 return {
   name: 'My Bot',
-  image: \`https://robohash.org/\${Math.random()}.png?set=set2&size=40x40&bgset=bg2\`,
+  image: \`https://robohash.org/\${Math.random()}.png?set=set2&size=80x80&bgset=bg2\`,
 
   /*
   * action() runs every frame

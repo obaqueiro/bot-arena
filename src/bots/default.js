@@ -1,7 +1,7 @@
 export default (
   `return {
   name: 'CPU Bot',
-  image: 'https://robohash.org/robot.png?set=set2&size=40x40&bgset=bg2',
+  image: 'https://robohash.org/robot.png?set=set2&size=80x80&bgset=bg2',
   action: ({ me, enemies }) => {
     let enemy = enemies[0]
     let target = { x: 0, y: -80 }
