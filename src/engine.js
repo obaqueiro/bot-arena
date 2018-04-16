@@ -1,4 +1,5 @@
 import V from './vector'
+import { MOVE, SHOOT } from './constants'
 
 const BOT_RADIUS = 10
 const BOT_COLLISION_DIST = (BOT_RADIUS + BOT_RADIUS) * (BOT_RADIUS + BOT_RADIUS)
@@ -100,7 +101,7 @@ export default (bots, parentNode) => {
       // Execute actions
       actions.forEach(action => {
         switch (action.type) {
-          case 'MOVE': {
+          case MOVE: {
             const movement = (
               V.magnitudeSquared(action) > 1
                 ? V.normalize(action)
@@ -113,7 +114,7 @@ export default (bots, parentNode) => {
             )
             break
           }
-          case 'SHOOT': {
+          case SHOOT: {
             if (action.bot.reload <= 0) {
               state.bullets.push(createBullet(
                 action.bot.pos,
