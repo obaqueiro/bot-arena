@@ -44,7 +44,7 @@ const actions = {
       return { tabs, bots, showReset: true }
     } catch (_) {}
   },
-  onReset: () => {
+  onReset: async () => {
     if (window.confirm('This will reset to default code, are you sure you want that?')) {
       window.localStorage.removeItem('bot-arena-tabs')
 
@@ -53,7 +53,7 @@ const actions = {
           { title: 'My Bot', code: exampleBot },
           { title: 'CPU Bot', code: defaultBot }
         ],
-        bots: setupBots([
+        bots: await setupBots([
           { constructor: Function(exampleBot) }, // eslint-disable-line
           { constructor: Function(defaultBot) } // eslint-disable-line
         ]),

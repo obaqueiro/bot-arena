@@ -35,6 +35,7 @@ export default connect('bots,speed', actions)(
       return <div className='field-column'>
         <div className='battle-field' ref='field'>
           {
+            this.props.bots &&
             this.props.bots.map(bot => (
               <div
                 className='bot'
