@@ -28,6 +28,16 @@ const store = createStore({
 setupBots(tabs.map(tab => ({
   constructor: Function(tab.code) // eslint-disable-line
 })))
-  .then(bots => store.setState({ bots }))
+  .then(bots => store.setState({
+    bots,
+    tabs: store.getState().tabs.map((tab, i) => ({
+      ...tab,
+      title: (
+        bots[i] &&
+        bots[i].object &&
+        bots[i].object.name
+      ) || 'Unnamed Bot'
+    }))
+  }))
 
 export default store
