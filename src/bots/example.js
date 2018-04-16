@@ -9,6 +9,10 @@ export default (
 // Reload time is 30 frames
 // Max movement speed per frame is 1
 
+// Return an object with bot properties
+// Alternatively return a Promise to load bot code remotely
+// For example, to load a bot from a gist:
+// return fetch('https://api.github.com/gists/GIST_ID').then(r => r.json())
 return {
   name: 'My Bot',
   image: \`https://robohash.org/\${Math.random()}.png?set=set2&size=80x80&bgset=bg2\`,
