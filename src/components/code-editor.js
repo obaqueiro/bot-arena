@@ -15,7 +15,7 @@ const onLoad = (editor) => {
   editor.session.$worker.call('changeOptions', [{asi: true}])
 }
 
-const actions = {
+const actions = store => ({
   onChange: async (state, index, value) => {
     try {
       const tabs = state.tabs.map((tab, i) => (
@@ -23,6 +23,14 @@ const actions = {
           ? { ...tab, code: value }
           : tab
       ))
+
+      store.setState({ tabs })
+
+      window.localStorage.setItem(
+        'bot-arena-tabs',
+        JSON.stringify(tabs)
+      )
+
       const bots = await setupBots(tabs.map(tab => ({
         constructor: Function(tab.code) // eslint-disable-line
       })))
@@ -41,8 +49,8 @@ const actions = {
         JSON.stringify(tabs)
       )
 
-      return { tabs, bots, showReset: true }
-    } catch (_) {}
+      store.setState({ tabs, bots, showReset: true })
+    } catch (err) { console.warn(err) }
   },
   onReset: async () => {
     if (window.confirm('This will reset to default code, are you sure you want that?')) {
@@ -61,7 +69,7 @@ const actions = {
       }
     }
   }
-}
+})
 
 export default connect('activeTab,tabs,showReset', actions)(
   ({ activeTab, tabs, showReset, onChange, onReset }) => (
