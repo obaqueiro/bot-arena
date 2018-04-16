@@ -8,24 +8,22 @@ export const setupBots = async (bots) => {
   let _bots = []
 
   for (let i = 0; i < bots.length; i++) {
-    const objectOrUrl = bots[i].constructor.call({})
+    const objectOrPromise = bots[i].constructor.call({})
     let object
 
-    // If object is a string, assume url
-    if (typeof objectOrUrl === 'string') {
-      // Load gists
-      if (objectOrUrl.indexOf('api.github.com/gists') > -1) {
-        let data = await window.fetch(objectOrUrl).then(r => r.json())
-        let file = data.files[Object.keys(data.files)[0]]
+    // If object is a promise, wait for it
+    if (objectOrPromise.then) {
+      const data = await objectOrPromise
 
+      // If data.files exists, assume it's a gist
+      if (data && data.files) {
+        const file = data.files[Object.keys(data.files)[0]]
         object = Function(file.content).call({}) // eslint-disable-line
       } else {
-        let data = await window.fetch(objectOrUrl).then(r => r.text())
-
         object = Function(data).call({}) // eslint-disable-line
       }
     } else {
-      object = objectOrUrl
+      object = objectOrPromise
     }
 
     _bots.push({
