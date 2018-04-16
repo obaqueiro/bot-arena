@@ -19,6 +19,7 @@ try {
 
 export default createStore({
   activeTab: 0,
+  speed: 3,
   tabs,
   showReset,
   bots: setupBots(tabs.map(tab => ({

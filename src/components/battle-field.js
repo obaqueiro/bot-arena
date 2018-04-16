@@ -4,6 +4,8 @@ import './battle-field.sass'
 import './field-column.sass'
 import Engine from '../engine'
 
+const speeds = [0.1, 0.25, 0.5, 1, 2, 5, 10]
+
 const actions = {
   onSpeed: (_, ev) => ({
     speed: parseFloat(ev.target.value)
@@ -25,7 +27,7 @@ export default connect('bots,speed', actions)(
 
       try {
         this.engine = Engine(this.props.bots, this.refs.field)
-        this.engine.setSpeed(this.props.speed || 1)
+        this.engine.setSpeed(speeds[this.props.speed])
       } catch (_) {}
     }
 
@@ -52,13 +54,13 @@ export default connect('bots,speed', actions)(
         <div className='speed'>
           <input
             type='range'
-            min='0.1'
-            max='10'
-            step='0.1'
-            value={this.props.speed || 1}
+            min='0'
+            max='6'
+            step='1'
+            value={this.props.speed}
             onChange={this.props.onSpeed}
           />
-          <span className='value'>{this.props.speed || 1}x</span>
+          <span className='value'>{speeds[this.props.speed]}x</span>
         </div>
       </div>
     }
