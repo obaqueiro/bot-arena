@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'unistore/react'
+import shallowCompare from 'shallow-compare'
 import './battle-field.sass'
 import './field-column.sass'
 import Engine from '../engine'
@@ -12,14 +13,41 @@ const actions = {
   })
 }
 
-export default connect('bots,speed', actions)(
-  class BattleField extends React.PureComponent {
+const SpeedRange = connect('speed', actions)(({speed, onSpeed}) => (
+  <div className='speed'>
+    <input
+      type='range'
+      min='0'
+      max='6'
+      step='1'
+      value={speed}
+      onChange={onSpeed}
+    />
+    <span className='value'>Speed: {speeds[speed]}x</span>
+  </div>
+))
+
+export default connect('bots,speed')(
+  class BattleField extends React.Component {
     componentDidMount () {
       this.setupEngine()
     }
 
     componentDidUpdate () {
       this.setupEngine()
+    }
+
+    shouldComponentUpdate (nextProps, nextState) {
+      // Hack to not update if only speed is updated
+      let me = { props: { ...this.props }, state: {} }
+      if (nextProps.speed !== me.props.speed) {
+        me.props.speed = nextProps.speed
+
+        // Only update engine speed
+        this.engine.setSpeed(speeds[nextProps.speed])
+      }
+
+      return shallowCompare(me, nextProps, nextState)
     }
 
     setupEngine () {
@@ -52,17 +80,7 @@ export default connect('bots,speed', actions)(
             ))
           }
         </div>
-        <div className='speed'>
-          <input
-            type='range'
-            min='0'
-            max='6'
-            step='1'
-            value={this.props.speed}
-            onChange={this.props.onSpeed}
-          />
-          <span className='value'>Speed: {speeds[this.props.speed]}x</span>
-        </div>
+        <SpeedRange />
       </div>
     }
   }

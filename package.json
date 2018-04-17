@@ -25,6 +25,7 @@
     "react": "^16.0.0",
     "react-ace": "^6.0.0",
     "react-dom": "^16.3.1",
+    "shallow-compare": "^1.2.2",
     "standard": "^11.0.1",
     "unistore": "^3.0.4"
   },
