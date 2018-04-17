@@ -18,7 +18,7 @@ const onLoad = (editor) => {
 const actions = store => ({
   onChange: async (state, index, value) => {
     try {
-      const tabs = state.tabs.map((tab, i) => (
+      let tabs = state.tabs.map((tab, i) => (
         i === index
           ? { ...tab, code: value }
           : tab
@@ -36,13 +36,16 @@ const actions = store => ({
       })))
 
       // Set title to bot name if found
-      tabs.forEach((tab, i) => {
-        tab.title = (
+      // Fetch tabs from state if updated during bots promise
+      tabs = store.getState().tabs
+      tabs = tabs.map((tab, i) => ({
+        ...tab,
+        title: (
           bots[i] &&
           bots[i].object &&
           bots[i].object.name
         ) || 'Unnamed Bot'
-      })
+      }))
 
       window.localStorage.setItem(
         'bot-arena-tabs',
