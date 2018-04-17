@@ -22,7 +22,7 @@ export default (bots, parentNode) => {
 
   let winnerDom
 
-  const createBullet = (pos, dir) => {
+  const createBullet = (pos, dir, botId) => {
     const dom = document.createElement('div')
     dom.className = 'bullet'
     parentNode.appendChild(dom)
@@ -39,7 +39,8 @@ export default (bots, parentNode) => {
       pos: V.add(pos, V.multScalar(dir, BOT_RADIUS + BULLET_RADIUS)),
       vel: V.multScalar(dir, BULLET_SPEED),
       dir,
-      dom
+      dom,
+      botId
     }
   }
 
@@ -52,6 +53,7 @@ export default (bots, parentNode) => {
   }
 
   const mapBot = (bot) => ({
+    id: bot.key,
     name: bot.object.name,
     health: bot.health,
     pos: V.clone(bot.pos),
@@ -61,7 +63,8 @@ export default (bots, parentNode) => {
   const mapBullet = (bullet) => ({
     pos: V.clone(bullet.pos),
     vel: V.clone(bullet.vel),
-    dir: V.clone(bullet.dir)
+    dir: V.clone(bullet.dir),
+    botId: bullet.botId
   })
 
   const update = () => {
@@ -123,7 +126,8 @@ export default (bots, parentNode) => {
             if (action.bot.reload <= 0) {
               state.bullets.push(createBullet(
                 action.bot.pos,
-                V.normalize(action)
+                V.normalize(action),
+                action.bot.key
               ))
               action.bot.reload = RELOAD_TIME + 1
             }

@@ -21,9 +21,9 @@ return {
   * action() runs every frame
   * Return a direction to either move your bot or shoot a bullet
   *
-  * @param {name, health, pos, lastAction} me
-  * @param [{name, health, pos, lastAction}] enemies
-  * @param [{pos, vel, dir}] bullets
+  * @param {id, name, health, pos, lastAction} me
+  * @param [{id, name, health, pos, lastAction}] enemies
+  * @param [{pos, vel, dir, botId}] bullets
   * @param int frame
   * @returns MOVE(x,y) or SHOOT(x,y)
   */
