@@ -15,3 +15,6 @@ When visiting the page, the default example bot ("My Bot") includes comments des
 
 - Install dependencies with `yarn` or `npm install`
 - Run with `yarn start` or `npm start`
+
+## Obfuscate code (for sharing)
+There is a simple bot code obfuscator available at https://bot-arena-obfuscator-doprgdlulc.now.sh if you want to share your bot without revealing too much secrets
