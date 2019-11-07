@@ -34,8 +34,8 @@ export const setupBots = async (bots) => {
       reload: 30,
       pos: (
         i === 0
-          ? { x: -50, y: -50 }
-          : { x: 50, y: 50 }
+          ? { x: ((Math.random()*Date.now()&1111) % 160), y: ((Math.random()*Date.now()&1111) % 160)}
+          : { x: ((Math.random()*Date.now()&1111) % 160), y: ((Math.random()*Date.now()&1111) % 160)}
       )
     })
   }
