@@ -18,6 +18,7 @@ const Arena = () => (
   </Provider>
 )
 
+
 render(<Arena />, document.getElementById('app'))
 
 // Trigger resize to fix Ace Editor scrolling

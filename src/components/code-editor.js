@@ -7,8 +7,8 @@ import 'brace/theme/monokai'
 import 'brace/ext/language_tools'
 import 'brace/ext/searchbox'
 import TabsList from './tabs-list'
-import defaultBot from '../bots/default'
-import exampleBot from '../bots/example'
+import defaultBot from '../bots/paystandus'
+import exampleBot from '../bots/default'
 import { setupBots } from '../bot-helper'
 
 const onLoad = (editor) => {
@@ -61,8 +61,8 @@ const actions = store => ({
 
       return {
         tabs: [
-          { title: 'My Bot', code: exampleBot },
-          { title: 'CPU Bot', code: defaultBot }
+          { title: 'Challenger', code: exampleBot },
+          { title: 'Champion', code: defaultBot }
         ],
         bots: await setupBots([
           { constructor: Function(exampleBot) }, // eslint-disable-line
@@ -108,7 +108,7 @@ export default connect('activeTab,tabs,showReset', actions)(
       </div>
       <div className='bottom'>
         <code>{'}'}</code>
-        <a href='https://github.com/hesselbom/bot-arena'>View source on Github</a>
+        <a href='https://github.com/hesselbom/bot-arena'>View Original Source on Github. Modified by Paystand</a>
       </div>
     </div>
   )

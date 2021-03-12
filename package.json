@@ -34,5 +34,8 @@
       "dist",
       "lib"
     ]
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3"
   }
 }

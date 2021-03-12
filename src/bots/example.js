@@ -17,6 +17,10 @@ return {
   name: 'My Bot',
   image: \`https://robohash.org/\${Math.random()}.png?set=set2&size=80x80&bgset=bg2\`,
 
+  // Asegurate de cambiar esta información
+  builder: 'Omar Baqueiro',
+  email: 'obaqueiro@paystand.com',
+
   /*
   * action() runs every frame
   * Return a direction to either move your bot or shoot a bullet

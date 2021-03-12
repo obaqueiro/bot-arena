@@ -1,11 +1,11 @@
 import createStore from 'unistore'
-import defaultBot from './bots/default'
-import exampleBot from './bots/example'
+import defaultBot from './bots/paystandus'
+import exampleBot from './bots/default'
 import { setupBots } from './bot-helper'
 
 let tabs = [
-  { title: 'My Bot', code: exampleBot },
-  { title: 'CPU Bot', code: defaultBot }
+  { title: 'Challenger', code: exampleBot },
+  { title: 'Champion', code: defaultBot }
 ]
 let showReset = false
 
